@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: _site
+website:
+  title: "The 2nd Trial"
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - text: Math
+        href: math.qmd
+theme: simplex
+format:
+  html:
+    include-in-header:
+      - text: |
+          <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+          <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

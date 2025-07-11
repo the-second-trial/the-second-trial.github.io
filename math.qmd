@@ -1,0 +1,35 @@
+---
+title: "Math & Equations"
+format: html
+---
+
+# Math & Equations
+
+Quarto supports beautiful math rendering using LaTeX syntax. Here are some examples:
+
+## Inline Math
+
+The famous equation $e^{i\pi} + 1 = 0$ is known as Euler's identity.
+
+## Display Math
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
+## System of Equations
+
+$$
+\begin{cases}
+  x + y = 1 \\
+  x - y = 2
+\end{cases}
+$$
+
+## Quadratic Formula
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+You can add more math content using standard LaTeX notation.

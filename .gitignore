@@ -1,7 +1,16 @@
-*.gem
-.git
-.bundle
+# Quarto build output
+_site/
+
+# Quarto cache
+.quarto/
+
+# VS Code settings
+.vscode/
+
+# System files
 .DS_Store
-_site
-Gemfile.lock
-.jekyll-cache
+
+# Logs
+*.log
+
+/.quarto/
