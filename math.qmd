@@ -2,7 +2,7 @@
 title: "Math & Equations"
 ---
 
-# Math & Equations
+# Whereas recognition of the inherent dignity
 
 Quarto supports beautiful math rendering using LaTeX syntax. Here are some examples:
 
