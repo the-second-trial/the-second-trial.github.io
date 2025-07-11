@@ -10,7 +10,6 @@ website:
       - text: Math
         href: math.qmd
 theme:
-  - simplex
   - custom.scss
 format:
   html:
