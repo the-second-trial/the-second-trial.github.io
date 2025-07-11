@@ -1,0 +1,26 @@
+/* custom.scss: Add your custom styles below. These will override Simplex theme styles. */
+
+/*-- scss:defaults --*/
+$primary: #d9230f;
+$font-family-base: 'Segoe UI', 'Arial', sans-serif;
+
+/*-- scss:rules --*/
+body {
+  font-family: $font-family-base;
+}
+h1 {
+  font-weight: 700;
+}
+
+// Example: Custom button style
+.btn-primary {
+  background-color: $primary;
+  border-color: $primary;
+}
+
+// Example: Custom link style
+a {
+  text-decoration: underline;
+}
+
+// Add more customizations as needed...

@@ -9,7 +9,9 @@ website:
         href: index.qmd
       - text: Math
         href: math.qmd
-theme: simplex
+theme:
+  - simplex
+  - custom.scss
 format:
   html:
     include-in-header:
