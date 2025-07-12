@@ -1,0 +1,10 @@
+---
+title: "Articles"
+listing:
+  contents:
+    - "articles/*.qmd"
+---
+
+# Articles Index
+
+Below is a list of all articles in the `articles` folder:

@@ -1,0 +1,68 @@
+---
+title: "Toward a Unified Theory of High-Energy Metaphysics: Silly String Theory"
+date: 2008-02-29
+author:
+  - name: Josiah Carberry
+    id: jc
+    orcid: 0000-0002-1825-0097
+    email: josiah@psychoceramics.org
+    affiliation: 
+      - name: Brown University
+        city: Providence
+        state: RI
+        url: www.brown.edu
+abstract: > 
+  The characteristic theme of the works of Stone is 
+  the bridge between culture and society. ...
+keywords:
+  - Metaphysics
+  - String Theory
+license: "CC BY"
+copyright: 
+  holder: Josiah Carberry
+  year: 2008
+funding: "The author received no specific funding for this work."
+format:
+  html:
+    page-layout: article
+---
+
+# Whereas recognition of the inherent dignity
+
+Quarto supports beautiful math rendering using LaTeX syntax. Here are some examples:
+
+## Inline Math
+
+The famous equation $e^{i\pi} + 1 = 0$ is known as Euler's identity.
+
+## Display Math
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
+## System of Equations
+This is an examaple.
+
+$$
+\begin{cases}
+  x + y = 1 \\
+  x - y = 2
+\end{cases}
+$$
+
+And more stuff to come.
+
+::: {.column-margin}
+We know from *the first fundamental theorem of calculus* that for $x$ in $[a, b]$:
+
+$$\frac{d}{dx}\left( \int_{a}^{x} f(u)\,du\right)=f(x).$$
+:::
+
+## Quadratic Formula
+
+$$
+x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+$$
+
+You can add more math content using standard LaTeX notation.
