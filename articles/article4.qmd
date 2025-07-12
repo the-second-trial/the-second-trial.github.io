@@ -1,5 +1,5 @@
 ---
-title: "Lorem Ipsum and the Theory of Relativity"
+title: "Lorem Ipsum and the Theory of Longinus"
 date: 2025-07-12
 author: Emily Brown
 abstract: |
@@ -8,14 +8,15 @@ keywords: [Relativity, Ipsum]
 format:
   html:
     page-layout: article
+toc: true
 ---
 
 # Relativity
 
 Lorem ipsum dolor sit amet, $c^2 = a^2 + b^2$.
 
-::: {.sidebar}
-**Sidebar:** Time dilation is a key concept in relativity.
+::: {.column-margin}
+**Sidebar:** Time dilation is a key concept in Longinus.
 :::
 
 ## Equation

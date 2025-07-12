@@ -50,7 +50,8 @@ $enable-shadows: true !default;
 // Fonts
 
 // stylelint-disable-next-line value-keyword-case
-$font-family-sans-serif: 'ibm-plex-sans', sans-serif !default;
+$font-family-base: 'noto-serif', serif !default;
+$headings-font-family: 'ibm-plex-sans', sans-serif !default;
 
 // Dropdowns
 
