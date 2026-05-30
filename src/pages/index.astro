@@ -1,15 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import StickyHeader from '../components/StickyHeader.astro';
 import FilterBar from '../components/FilterBar.astro';
 import Card from '../components/Card.astro';
-import { items, allTags } from '../data/items.js';
 
-// newest first
-const sorted = [...items].sort((a, b) =>
-  (b.date ?? '').localeCompare(a.date ?? '')
-);
+const entries = await getCollection('work');
+
+// map collection entries to the shape Card expects, newest first
+const sorted = entries
+  .map((entry) => ({
+    title: entry.data.title,
+    description: entry.data.description,
+    href: `/work/${entry.id}/`,
+    tags: entry.data.tags,
+    date: entry.data.date,
+  }))
+  .sort((a, b) => b.date.getTime() - a.date.getTime());
+
+const allTags = [...new Set(sorted.flatMap((i) => i.tags))].sort();
 ---
 
 <Layout title="the-2nd-trial">

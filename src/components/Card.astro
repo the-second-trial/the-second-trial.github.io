@@ -3,7 +3,7 @@ const { item } = Astro.props;
 const { title, description, href, tags = [], date } = item;
 
 const formattedDate = date
-  ? new Date(date).toLocaleDateString('en-CA') // YYYY-MM-DD, terminal-friendly
+  ? new Date(date).toLocaleDateString('en-CA', { timeZone: 'UTC' }) // YYYY-MM-DD
   : null;
 
 const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();

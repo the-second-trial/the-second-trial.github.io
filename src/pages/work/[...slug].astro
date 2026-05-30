@@ -1,0 +1,210 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('work');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, description, tags, date } = entry.data;
+
+const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'UTC' });
+---
+
+<Layout title={`${title} — the-2nd-trial`}>
+  <nav class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="back" href="/#work">
+        <span class="prompt">the-2nd-trial:~$</span> cd ..
+      </a>
+    </div>
+  </nav>
+
+  <main class="wrap article">
+    <header class="art-head">
+      <p class="path">
+        <span class="prompt">$</span> cat ./work/{entry.id}.md
+      </p>
+      <h1 class="art-title">{title}</h1>
+      <p class="art-desc">{description}</p>
+      <div class="meta">
+        <time>[{formattedDate}]</time>
+        <ul class="tags">
+          {tags.map((t) => <li>--{t}</li>)}
+        </ul>
+      </div>
+      <div class="rule" aria-hidden="true"></div>
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="art-foot">
+      <div class="rule" aria-hidden="true"></div>
+      <a class="back" href="/#work">
+        <span class="prompt">the-2nd-trial:~$</span> cd ./work
+      </a>
+    </footer>
+  </main>
+</Layout>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-inner {
+    padding-block: 0.7rem;
+  }
+
+  .back {
+    font-size: 0.85rem;
+    color: var(--text);
+  }
+  .back:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .prompt {
+    color: var(--accent);
+  }
+
+  .article {
+    padding-block: clamp(2.5rem, 8vh, 4.5rem);
+    max-width: 72ch;
+  }
+
+  .path {
+    margin: 0 0 1.2rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+
+  .art-title {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin: 0 0 0.6rem;
+    color: var(--accent);
+    text-shadow: 0 0 18px var(--accent-glow);
+  }
+  .art-desc {
+    margin: 0 0 1.2rem;
+    color: var(--text);
+    font-size: 1rem;
+  }
+  .meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .meta time {
+    color: var(--text-faint);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--border);
+    margin-block: 1.6rem;
+  }
+
+  /* markdown body */
+  .prose {
+    color: var(--text);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+  .prose :global(h2) {
+    font-size: 1.2rem;
+    margin: 2.2rem 0 0.8rem;
+    color: var(--text);
+  }
+  .prose :global(h2)::before {
+    content: '## ';
+    color: var(--accent);
+  }
+  .prose :global(h3) {
+    font-size: 1.05rem;
+    margin: 1.8rem 0 0.6rem;
+    color: var(--text);
+  }
+  .prose :global(h3)::before {
+    content: '### ';
+    color: var(--accent);
+  }
+  .prose :global(p) {
+    margin: 0 0 1.1rem;
+    color: var(--text);
+  }
+  .prose :global(strong) {
+    color: var(--text);
+    font-weight: 700;
+  }
+  .prose :global(a) {
+    color: var(--accent);
+  }
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 1.1rem;
+    padding-left: 1.4rem;
+    color: var(--text);
+  }
+  .prose :global(li) {
+    margin-bottom: 0.4rem;
+  }
+  .prose :global(li)::marker {
+    color: var(--accent);
+  }
+  .prose :global(blockquote) {
+    margin: 1.4rem 0;
+    padding: 0.6rem 0 0.6rem 1.1rem;
+    border-left: 2px solid var(--accent);
+    color: var(--text);
+    background: var(--surface);
+  }
+  .prose :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.1em 0.35em;
+    background: var(--surface-hover);
+    border: 1px solid var(--border);
+    color: var(--accent);
+  }
+  .prose :global(pre) {
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    background: var(--bg-soft);
+  }
+  .prose :global(pre code) {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text);
+  }
+
+  .art-foot {
+    margin-top: 2.5rem;
+  }
+</style>
