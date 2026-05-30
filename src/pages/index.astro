@@ -55,6 +55,31 @@ const sorted = [...items].sort((a, b) =>
     </div>
   </section>
 
+  <section id="about" class="about">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="sh-prompt">$</span> cat ./about.md</h2>
+      </div>
+
+      <div class="about-body">
+        <p>
+          <span class="about-mark"># </span>The 2nd Trial is a personal log of
+          experiments and essays on science, data, and the things worth a
+          second look.
+        </p>
+        <p>
+          Each entry is a small attempt to understand something properly —
+          rebuilt from scratch, questioned, and written down. Some are
+          interactive, some are just prose. All of them are second tries at
+          getting it right.
+        </p>
+        <p>
+          Built and maintained by <span class="about-name">andrea tino</span>.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <footer class="footer">
     <div class="footer-scanlines" aria-hidden="true"></div>
     <div class="wrap">
@@ -202,6 +227,27 @@ const sorted = [...items].sort((a, b) =>
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .about {
+    padding-block: clamp(2.5rem, 7vh, 4.5rem);
+    border-top: 1px solid var(--border);
+  }
+  .about-body {
+    max-width: 68ch;
+  }
+  .about-body p {
+    margin: 0 0 1.1rem;
+    color: var(--text);
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .about-body p:last-child {
+    margin-bottom: 0;
+  }
+  .about-mark,
+  .about-name {
+    color: var(--accent);
   }
 
   .footer {

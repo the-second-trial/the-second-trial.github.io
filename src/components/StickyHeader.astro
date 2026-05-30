@@ -8,7 +8,10 @@ const { title = 'the-2nd-trial' } = Astro.props;
       <span class="dot" aria-hidden="true"></span>
       <span class="brand-name">{title}:~$</span>
     </a>
-    <a class="cta" href="#work">cd ./work</a>
+    <nav class="nav">
+      <a class="cta" href="#work">cd ./work</a>
+      <a class="cta" href="#about">cat ./about</a>
+    </nav>
   </div>
 </div>
 
@@ -68,6 +71,11 @@ const { title = 'the-2nd-trial' } = Astro.props;
     }
   }
 
+  .nav {
+    display: flex;
+    gap: 0.5rem;
+  }
+
   .cta {
     font-size: 0.78rem;
     letter-spacing: 0;
@@ -75,8 +83,7 @@ const { title = 'the-2nd-trial' } = Astro.props;
     border: 1px solid var(--border-strong);
     color: var(--text-muted);
     transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-  }
-  .cta::before {
+  }  .cta::before {
     content: '> ';
     color: var(--accent);
   }
