@@ -1,20 +1,26 @@
 ---
 const tagline =
-  'Articles and projects on science, data, and the things worth a second look.';
+  'A log of experiments and essays on science, data, and the things worth a second look.';
 ---
 
 <header class="hero" id="top">
   <span class="hero-sentinel" aria-hidden="true"></span>
-  <div class="grid-paper" aria-hidden="true"></div>
-  <div class="glow" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
 
   <div class="wrap hero-inner">
-    <p class="eyebrow">// experiments &amp; essays</p>
-    <h1 class="title">The 2nd Trial</h1>
-    <p class="tagline">{tagline}</p>
+    <div class="term">
+      <p class="line"><span class="prompt">the-2nd-trial:~$</span> whoami</p>
+      <h1 class="title">the_2nd_trial</h1>
+      <p class="line out">{tagline}</p>
+      <p class="line">
+        <span class="prompt">the-2nd-trial:~$</span>
+        <span class="cmd cursor">ls ./work</span>
+      </p>
+    </div>
+
     <a class="scroll-cue" href="#work" aria-label="Jump to the work">
-      <span>Explore the work</span>
       <span class="arrow" aria-hidden="true">↓</span>
+      <span>cat ./work/*</span>
     </a>
   </div>
 </header>
@@ -23,108 +29,38 @@ const tagline =
   .hero {
     position: relative;
     overflow: hidden;
-    padding-block: clamp(5rem, 16vh, 9rem);
+    padding-block: clamp(4.5rem, 14vh, 8rem);
     border-bottom: 1px solid var(--border);
-    background: radial-gradient(
-        120% 80% at 50% -10%,
-        var(--bg-soft) 0%,
-        var(--bg) 60%
-      );
+    background:
+      radial-gradient(140% 90% at 50% 0%, var(--bg-soft) 0%, var(--bg) 65%);
   }
 
-  .glow {
+  /* faint CRT scanlines + soft phosphor glow */
+  .scanlines {
     position: absolute;
-    top: -30%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(900px, 90vw);
-    height: 600px;
-    background: radial-gradient(
-        45% 45% at 50% 50%,
-        var(--accent-glow) 0%,
-        transparent 70%
-      ),
-      radial-gradient(
-        40% 40% at 65% 40%,
-        rgba(96, 165, 250, 0.18) 0%,
-        transparent 70%
-      );
-    filter: blur(8px);
-    pointer-events: none;
-    animation: glow-drift 16s ease-in-out infinite;
-  }
-
-  @keyframes glow-drift {
-    0%,
-    100% {
-      transform: translateX(-50%) translate(-4%, -2%) scale(1);
-      opacity: 0.85;
-    }
-    33% {
-      transform: translateX(-50%) translate(5%, 3%) scale(1.08);
-      opacity: 1;
-    }
-    66% {
-      transform: translateX(-50%) translate(2%, -3%) scale(0.96);
-      opacity: 0.9;
-    }
-  }
-
-  .grid-paper {
-    position: absolute;
-    inset: -15% 0 -15% 0;
-    will-change: transform;
-    /* fine minor grid + bolder major grid, like squared math paper */
-    background-image:
-      /* major lines every 120px */
-      linear-gradient(
-        to right,
-        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
+    inset: 0;
+    background:
+      repeating-linear-gradient(
         to bottom,
-        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
-        transparent 1px
-      ),
-      /* minor lines every 24px */
-      linear-gradient(
-        to right,
-        rgba(255, 255, 255, 0.06) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.06) 1px,
-        transparent 1px
+        rgba(51, 255, 102, 0.03) 0px,
+        rgba(51, 255, 102, 0.03) 1px,
+        transparent 1px,
+        transparent 4px
       );
-    background-size:
-      120px 120px,
-      120px 120px,
-      24px 24px,
-      24px 24px;
-    background-position: center center;
-    /* fade the grid out toward the edges so it melts into the page */
     -webkit-mask-image: radial-gradient(
-      115% 90% at 50% 35%,
+      120% 100% at 50% 30%,
       #000 0%,
-      transparent 78%
+      transparent 85%
     );
-    mask-image: radial-gradient(
-      115% 90% at 50% 35%,
-      #000 0%,
-      transparent 78%
-    );
+    mask-image: radial-gradient(120% 100% at 50% 30%, #000 0%, transparent 85%);
     pointer-events: none;
+    opacity: 0.5;
   }
 
   .hero-inner {
     position: relative;
-    text-align: center;
   }
 
-  /* sentinel sits near the bottom of the hero; when it scrolls out of
-     view the sticky header is revealed */
   .hero-sentinel {
     position: absolute;
     bottom: 80px;
@@ -133,29 +69,35 @@ const tagline =
     height: 1px;
   }
 
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+  .term {
+    max-width: 70ch;
+  }
+
+  .line {
+    margin: 0 0 0.4rem;
+    font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+    color: var(--text);
+    white-space: pre-wrap;
+  }
+  .line.out {
+    color: var(--text-muted);
+    margin: 1.1rem 0;
+    max-width: 60ch;
+  }
+
+  .prompt {
     color: var(--accent);
-    margin: 0 0 1rem;
+  }
+  .cmd {
+    color: var(--text);
   }
 
   .title {
-    font-size: clamp(2.75rem, 9vw, 5.5rem);
-    margin: 0;
-    background: linear-gradient(180deg, #fff 0%, var(--text-muted) 130%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  .tagline {
-    max-width: 46ch;
-    margin: 1.25rem auto 0;
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-    color: var(--text-muted);
+    font-size: clamp(2.4rem, 8vw, 4.6rem);
+    margin: 0.6rem 0 0.4rem;
+    color: var(--accent);
+    letter-spacing: 0;
+    text-shadow: 0 0 18px var(--accent-glow);
   }
 
   .scroll-cue {
@@ -163,17 +105,22 @@ const tagline =
     align-items: center;
     gap: 0.55rem;
     margin-top: 2.5rem;
-    padding: 0.6rem 1.1rem;
+    padding: 0.55rem 1rem;
     border: 1px solid var(--border-strong);
-    border-radius: var(--radius-sm);
     color: var(--text);
-    font-size: 0.9rem;
-    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    font-size: 0.85rem;
+    transition: color 0.18s ease, border-color 0.18s ease,
+      background 0.18s ease;
+  }
+  .scroll-cue::before {
+    content: '>';
+    color: var(--accent);
   }
   .scroll-cue:hover {
     border-color: var(--accent);
-    background: var(--surface);
-    transform: translateY(-2px);
+    background: var(--surface-hover);
+    color: var(--accent);
+    text-decoration: none;
   }
   .arrow {
     animation: bob 1.8s ease-in-out infinite;
@@ -189,33 +136,3 @@ const tagline =
     }
   }
 </style>
-
-<script>
-  const grid = document.querySelector<HTMLElement>('.grid-paper');
-  const reduceMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)'
-  ).matches;
-
-  if (grid && !reduceMotion) {
-    const SPEED = 0.25; // fraction of scroll distance the grid drifts
-    let ticking = false;
-
-    const update = () => {
-      grid.style.transform = `translateY(${window.scrollY * SPEED}px)`;
-      ticking = false;
-    };
-
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (!ticking) {
-          window.requestAnimationFrame(update);
-          ticking = true;
-        }
-      },
-      { passive: true }
-    );
-
-    update();
-  }
-</script>

@@ -12,26 +12,26 @@ const sorted = [...items].sort((a, b) =>
 );
 ---
 
-<Layout title="The 2nd Trial">
-  <StickyHeader title="The 2nd Trial" />
+<Layout title="the-2nd-trial">
+  <StickyHeader title="the-2nd-trial" />
   <Hero />
 
   <section id="work" class="work">
     <div class="wrap">
       <div class="section-head">
-        <h2>The Work</h2>
+        <h2><span class="sh-prompt">$</span> ls ./work</h2>
         <p class="count">
-          <span id="count">{sorted.length}</span> of {sorted.length}
+          <span id="count">{sorted.length}</span>/{sorted.length} entries
         </p>
       </div>
 
       <div class="controls" id="controls">
         <div class="search">
-          <span class="search-icon" aria-hidden="true">⌕</span>
+          <span class="search-icon" aria-hidden="true">grep&gt;</span>
           <input
             type="search"
             id="search"
-            placeholder="Search the work…"
+            placeholder="filter entries…"
             aria-label="Search the work"
             autocomplete="off"
           />
@@ -43,20 +43,25 @@ const sorted = [...items].sort((a, b) =>
         {sorted.map((item) => <Card item={item} />)}
       </div>
 
-      <p class="empty" id="empty" hidden>Nothing here for that search yet.</p>
+      <p class="empty" id="empty" hidden>
+        # no matches. try a different filter.
+      </p>
 
       <div class="loadmore-wrap">
         <button class="loadmore" id="loadmore" type="button" hidden>
-          Load more
+          load --more
         </button>
       </div>
     </div>
   </section>
 
   <footer class="footer">
-    <div class="footer-paper" aria-hidden="true"></div>
+    <div class="footer-scanlines" aria-hidden="true"></div>
     <div class="wrap">
-      <p>The 2nd Trial &middot; a second look at science.</p>
+      <p>
+        <span class="f-prompt">the-2nd-trial:~$</span> echo "a second look at
+        science"
+      </p>
     </div>
   </footer>
 </Layout>
@@ -74,12 +79,16 @@ const sorted = [...items].sort((a, b) =>
     margin-bottom: 1.5rem;
   }
   .section-head h2 {
-    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-size: clamp(1.2rem, 3.5vw, 1.7rem);
     margin: 0;
+    color: var(--text);
+  }
+  .sh-prompt {
+    color: var(--accent);
   }
   .count {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: var(--text-faint);
     margin: 0;
   }
@@ -91,12 +100,13 @@ const sorted = [...items].sort((a, b) =>
     z-index: 40;
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
+    gap: 0.8rem;
     margin-bottom: 2rem;
-    padding-block: 0.9rem;
-    background: color-mix(in srgb, var(--bg) 82%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    padding-block: 0.8rem;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
     transition: top 0.3s ease;
   }
 
@@ -107,23 +117,23 @@ const sorted = [...items].sort((a, b) =>
   }
   .search-icon {
     position: absolute;
-    left: 0.9rem;
-    color: var(--text-faint);
-    font-size: 1.1rem;
+    left: 0.7rem;
+    color: var(--accent);
+    font-size: 0.85rem;
     pointer-events: none;
   }
   .search input {
     width: 100%;
-    padding: 0.7rem 1rem 0.7rem 2.4rem;
-    font-family: var(--font-sans);
-    font-size: 0.95rem;
+    padding: 0.6rem 0.8rem 0.6rem 3.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
     color: var(--text);
     background: var(--surface);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    border-radius: 0;
     outline: none;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease,
-      background 0.18s ease;
+    transition: border-color 0.16s ease, box-shadow 0.16s ease,
+      background 0.16s ease;
   }
   .search input::placeholder {
     color: var(--text-faint);
@@ -131,22 +141,21 @@ const sorted = [...items].sort((a, b) =>
   .search input:focus {
     border-color: var(--accent);
     background: var(--surface-hover);
-    box-shadow: 0 0 0 3px var(--accent-glow);
+    box-shadow: inset 0 0 0 1px var(--accent-glow);
   }
-  /* hide native search clear button styling inconsistencies */
   .search input::-webkit-search-cancel-button {
     -webkit-appearance: none;
   }
 
   .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     gap: 1.25rem;
   }
 
   .empty {
     margin-top: 2rem;
-    text-align: center;
+    text-align: left;
     color: var(--text-muted);
     font-family: var(--font-mono);
   }
@@ -154,27 +163,29 @@ const sorted = [...items].sort((a, b) =>
   .loadmore-wrap {
     display: flex;
     justify-content: center;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
   }
   .loadmore {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    padding: 0.7rem 1.6rem;
+    font-size: 0.82rem;
+    letter-spacing: 0;
+    padding: 0.55rem 1.4rem;
     color: var(--text);
-    background: var(--surface);
+    background: transparent;
     border: 1px solid var(--border-strong);
-    border-radius: var(--radius-sm);
+    border-radius: 0;
     cursor: pointer;
-    transition: color 0.18s ease, border-color 0.18s ease,
-      background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    transition: color 0.16s ease, border-color 0.16s ease,
+      background 0.16s ease;
+  }
+  .loadmore::before {
+    content: '$ ';
+    color: var(--accent);
   }
   .loadmore:hover {
-    color: #fff;
+    color: var(--accent);
     border-color: var(--accent);
     background: var(--surface-hover);
-    box-shadow: 0 0 18px -4px var(--accent-glow);
-    transform: translateY(-2px);
   }
   .loadmore[hidden] {
     display: none;
@@ -183,8 +194,8 @@ const sorted = [...items].sort((a, b) =>
   /* scroll-in animation */
   .grid :global(.card) {
     opacity: 0;
-    transform: translateY(12px);
-    animation: rise 0.5s ease forwards;
+    transform: translateY(8px);
+    animation: rise 0.4s ease forwards;
   }
   @keyframes rise {
     to {
@@ -196,56 +207,40 @@ const sorted = [...items].sort((a, b) =>
   .footer {
     position: relative;
     overflow: hidden;
-    border-top: 1px solid var(--border);
-    padding-block: 4rem;
-    background: radial-gradient(
-      120% 120% at 50% 120%,
-      var(--bg-soft) 0%,
-      var(--bg) 60%
-    );
+    border-top: 1px solid var(--border-strong);
+    padding-block: 3rem;
+    background: var(--bg);
   }
   .footer .wrap {
     position: relative;
   }
   .footer p {
     margin: 0;
-    color: var(--text-muted);
+    color: var(--text);
     font-size: 0.85rem;
   }
+  .f-prompt {
+    color: var(--accent);
+  }
 
-  .footer-paper {
+  .footer-scanlines {
     position: absolute;
     inset: 0;
-    background-image:
-      linear-gradient(
-        to right,
-        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
-        transparent 1px
-      ),
-      linear-gradient(
-        to bottom,
-        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
-        transparent 1px
-      ),
-      linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-    background-size:
-      120px 120px,
-      120px 120px,
-      24px 24px,
-      24px 24px;
-    background-position: center center;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(51, 255, 102, 0.03) 0px,
+      rgba(51, 255, 102, 0.03) 1px,
+      transparent 1px,
+      transparent 4px
+    );
     -webkit-mask-image: radial-gradient(
-      120% 100% at 50% 100%,
+      130% 100% at 50% 100%,
       #000 0%,
-      transparent 80%
+      transparent 85%
     );
-    mask-image: radial-gradient(
-      120% 100% at 50% 100%,
-      #000 0%,
-      transparent 80%
-    );
+    mask-image: radial-gradient(130% 100% at 50% 100%, #000 0%, transparent 85%);
     pointer-events: none;
+    opacity: 0.4;
   }
 </style>
 

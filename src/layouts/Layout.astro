@@ -19,33 +19,32 @@ const { title = 'The 2nd Trial' } = Astro.props;
     <slot />
     <style is:global>
       :root {
-        /* fonts */
-        --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
-          'Segoe UI', Roboto, sans-serif;
-        --font-display: 'Inter', system-ui, sans-serif;
-        --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono',
-          Menlo, Consolas, monospace;
+        /* fonts — monospace everywhere, terminal style */
+        --font-sans: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code',
+          'Fira Code', Menlo, Consolas, monospace;
+        --font-display: var(--font-sans);
+        --font-mono: var(--font-sans);
 
-        /* cosmos palette */
-        --bg: #070b16;
-        --bg-soft: #0d1326;
-        --surface: rgba(255, 255, 255, 0.03);
-        --surface-hover: rgba(255, 255, 255, 0.06);
-        --border: rgba(255, 255, 255, 0.08);
-        --border-strong: rgba(255, 255, 255, 0.14);
+        /* phosphor terminal palette — mostly black, green as accent */
+        --bg: #050705;
+        --bg-soft: #0a0d0a;
+        --surface: rgba(51, 255, 102, 0.02);
+        --surface-hover: rgba(51, 255, 102, 0.05);
+        --border: rgba(51, 255, 102, 0.1);
+        --border-strong: rgba(51, 255, 102, 0.28);
 
-        --text: #e8edf7;
-        --text-muted: #9aa6c2;
-        --text-faint: #5e6a88;
+        --text: #c3d6c8;
+        --text-muted: #6f8a76;
+        --text-faint: #455c4c;
 
-        --accent: #5eead4; /* cyan */
-        --accent-2: #60a5fa; /* soft blue */
-        --accent-glow: rgba(94, 234, 212, 0.25);
+        --accent: #33ff66; /* matrix green */
+        --accent-2: #00ff41; /* brighter signal green */
+        --accent-glow: rgba(51, 255, 102, 0.3);
 
-        /* shape */
-        --radius: 16px;
-        --radius-sm: 999px;
-        --maxw: 1120px;
+        /* shape — terminal = sharp corners */
+        --radius: 0px;
+        --radius-sm: 0px;
+        --maxw: 1080px;
       }
 
       *,
@@ -61,6 +60,7 @@ const { title = 'The 2nd Trial' } = Astro.props;
       body {
         margin: 0;
         font-family: var(--font-sans);
+        font-size: 15px;
         line-height: 1.6;
         color: var(--text);
         background: var(--bg);
@@ -72,24 +72,47 @@ const { title = 'The 2nd Trial' } = Astro.props;
         color: var(--accent);
         text-decoration: none;
       }
+      a:hover {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
 
       h1,
       h2,
       h3 {
         font-family: var(--font-display);
-        line-height: 1.15;
-        letter-spacing: -0.02em;
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: 0;
       }
 
       ::selection {
-        background: var(--accent-glow);
-        color: #fff;
+        background: var(--accent);
+        color: var(--bg);
       }
 
       .wrap {
         max-width: var(--maxw);
         margin: 0 auto;
         padding-inline: 1.5rem;
+      }
+
+      /* blinking terminal cursor, reusable */
+      .cursor::after {
+        content: '_';
+        margin-left: 0.1em;
+        color: var(--accent);
+        animation: blink 1.1s step-end infinite;
+      }
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        50.01%,
+        100% {
+          opacity: 0;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {

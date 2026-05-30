@@ -3,10 +3,7 @@ const { item } = Astro.props;
 const { title, description, href, tags = [], date } = item;
 
 const formattedDate = date
-  ? new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-    })
+  ? new Date(date).toLocaleDateString('en-CA') // YYYY-MM-DD, terminal-friendly
   : null;
 
 const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
@@ -18,22 +15,19 @@ const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
   data-tags={tags.join(' ')}
   data-search={searchText}
 >
-  {
-    formattedDate && (
-      <div class="card-head">
-        <time class="date">{formattedDate}</time>
-      </div>
-    )
-  }
+  <div class="card-head">
+    <span class="marker" aria-hidden="true">&gt;</span>
+    <h3 class="card-title">{title}</h3>
+    {formattedDate && <time class="date">[{formattedDate}]</time>}
+  </div>
 
-  <h3 class="card-title">{title}</h3>
   <p class="card-desc">{description}</p>
 
   <div class="card-foot">
     <ul class="tags">
-      {tags.map((t) => <li>#{t}</li>)}
+      {tags.map((t) => <li>--{t}</li>)}
     </ul>
-    <span class="go" aria-hidden="true">→</span>
+    <span class="go" aria-hidden="true">↵</span>
   </div>
 </a>
 
@@ -41,53 +35,63 @@ const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
   .card {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.4rem;
+    gap: 0.65rem;
+    padding: 1.1rem 1.2rem;
     height: 100%;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
     color: var(--text);
-    transition: transform 0.22s ease, border-color 0.22s ease,
-      background 0.22s ease, box-shadow 0.22s ease;
+    transition: border-color 0.18s ease, background 0.18s ease,
+      box-shadow 0.18s ease;
   }
   .card:hover {
-    transform: translateY(-4px);
     background: var(--surface-hover);
     border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent-glow), 0 18px 40px -20px var(--accent-glow);
+    box-shadow: inset 0 0 0 1px var(--accent-glow), 0 0 20px -6px var(--accent-glow);
+    text-decoration: none;
   }
 
   .card-head {
     display: flex;
-    align-items: center;
-    justify-content: flex-end;
+    align-items: baseline;
     gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .marker {
+    color: var(--accent);
+    opacity: 0.5;
+    transition: opacity 0.18s ease;
+  }
+  .card:hover .marker {
+    opacity: 1;
+  }
+
+  .card-title {
+    font-size: 1.05rem;
+    margin: 0;
+    color: var(--text);
+    flex: 1;
+  }
+  .card:hover .card-title {
+    color: var(--accent);
   }
 
   .date {
-    font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--text-faint);
   }
 
-  .card-title {
-    font-size: 1.25rem;
-    margin: 0;
-  }
-  .card:hover .card-title {
-    color: #fff;
-  }
-
   .card-desc {
     margin: 0;
+    padding-left: 1.1rem;
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
   }
 
   .card-foot {
     margin-top: auto;
-    padding-top: 0.5rem;
+    padding-top: 0.4rem;
+    padding-left: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -97,11 +101,10 @@ const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.55rem;
     margin: 0;
     padding: 0;
     list-style: none;
-    font-family: var(--font-mono);
     font-size: 0.72rem;
     color: var(--text-faint);
   }
@@ -110,7 +113,7 @@ const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
     color: var(--accent);
     opacity: 0;
     transform: translateX(-4px);
-    transition: opacity 0.22s ease, transform 0.22s ease;
+    transition: opacity 0.18s ease, transform 0.18s ease;
   }
   .card:hover .go {
     opacity: 1;
