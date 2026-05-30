@@ -1,16 +1,21 @@
-# Quarto build output
-_site/
+# build output
+dist/
 
-# Quarto cache
-.quarto/
+# dependencies
+node_modules/
 
-# VS Code settings
-.vscode/
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# System files
+# environment variables
+.env
+.env.production
+
+# macOS
 .DS_Store
 
-# Logs
-*.log
-
-/.quarto/
+# astro
+.astro/

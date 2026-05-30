@@ -1,9 +1,0 @@
----
-title: "Welcome to The 2nd Trial"
----
-
-# The 2nd Trial
-
-This is the official homepage for The 2nd Trial. Built with Quarto and the Simplex theme.
-
-Explore the Math section for equations and mathematical content.
