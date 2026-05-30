@@ -12,10 +12,14 @@ const tagline =
       <p class="line"><span class="prompt">the-2nd-trial:~$</span> whoami</p>
       <h1 class="title">the_2nd_trial</h1>
       <p class="line out">{tagline}</p>
-      <p class="line">
-        <span class="prompt">the-2nd-trial:~$</span>
-        <span class="cmd cursor">ls ./work</span>
-      </p>
+      <p class="line"><span class="prompt">the-2nd-trial:~$</span> <span
+          class="cmd"
+          id="typed"
+          data-cmd="uname --operator"></span><span
+          class="caret"
+          id="caret"
+          aria-hidden="true"></span></p>
+      <p class="line answer" id="answer" hidden>andrea tino</p>
     </div>
 
     <a class="scroll-cue" href="#work" aria-label="Jump to the work">
@@ -92,6 +96,36 @@ const tagline =
     color: var(--text);
   }
 
+  /* block caret that blinks while/after typing */
+  .caret {
+    display: inline-block;
+    width: 0.6ch;
+    height: 1.1em;
+    margin-left: 0.1ch;
+    transform: translateY(0.18em);
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow);
+    animation: caret-blink 1.1s step-end infinite;
+  }
+  @keyframes caret-blink {
+    0%,
+    50% {
+      opacity: 1;
+    }
+    50.01%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .answer {
+    color: var(--text);
+    margin: -0.2rem 0 0;
+  }
+  .answer[hidden] {
+    display: none;
+  }
+
   .title {
     font-size: clamp(2.4rem, 8vw, 4.6rem);
     margin: 0.6rem 0 0.4rem;
@@ -136,3 +170,41 @@ const tagline =
     }
   }
 </style>
+
+<script>
+  const typed = document.getElementById('typed');
+  const caret = document.getElementById('caret');
+  const answer = document.getElementById('answer');
+  const cmd = typed?.dataset.cmd ?? '';
+
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  if (typed && answer) {
+    if (reduceMotion) {
+      // no animation: show final state immediately
+      typed.textContent = cmd;
+      answer.hidden = false;
+    } else {
+      let i = 0;
+
+      const typeNext = () => {
+        if (i <= cmd.length) {
+          typed.textContent = cmd.slice(0, i);
+          i++;
+          // slight human-like jitter in keystroke timing
+          window.setTimeout(typeNext, 55 + Math.random() * 70);
+        } else {
+          // command "submitted": brief pause, then show the answer
+          window.setTimeout(() => {
+            answer.hidden = false;
+          }, 450);
+        }
+      };
+
+      // small initial delay so the page settles first
+      window.setTimeout(typeNext, 650);
+    }
+  }
+</script>
