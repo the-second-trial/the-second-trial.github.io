@@ -1,0 +1,52 @@
+---
+const { tags = [] } = Astro.props;
+const chips = ['all', ...tags];
+---
+
+<div class="filterbar" role="group" aria-label="Filter by topic">
+  {
+    chips.map((tag) => (
+      <button
+        class="chip"
+        type="button"
+        data-filter={tag}
+        aria-pressed={tag === 'all' ? 'true' : 'false'}
+      >
+        {tag === 'all' ? 'All' : `#${tag}`}
+      </button>
+    ))
+  }
+</div>
+
+<style>
+  .filterbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.18s ease, border-color 0.18s ease,
+      background 0.18s ease, box-shadow 0.18s ease;
+  }
+  .chip:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+  .chip[aria-pressed='true'] {
+    color: var(--bg);
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 18px -4px var(--accent-glow);
+  }
+</style>

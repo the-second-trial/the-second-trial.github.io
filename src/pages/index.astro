@@ -1,11 +1,150 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import StickyHeader from '../components/StickyHeader.astro';
+import FilterBar from '../components/FilterBar.astro';
+import Card from '../components/Card.astro';
+import { items, allTags } from '../data/items.js';
+
+// newest first
+const sorted = [...items].sort((a, b) =>
+  (b.date ?? '').localeCompare(a.date ?? '')
+);
 ---
 
 <Layout title="The 2nd Trial">
-  <h1>The 2nd Trial</h1>
-  <p>
-    Welcome. This site has been bootstrapped with
-    <a href="https://astro.build">Astro</a>.
-  </p>
+  <StickyHeader title="The 2nd Trial" />
+  <Hero />
+
+  <section id="work" class="work">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>The Work</h2>
+        <p class="count">
+          <span id="count">{sorted.length}</span> entries
+        </p>
+      </div>
+
+      <FilterBar tags={allTags} />
+
+      <div class="grid" id="grid">
+        {sorted.map((item) => <Card item={item} />)}
+      </div>
+
+      <p class="empty" id="empty" hidden>Nothing here for that filter yet.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="wrap">
+      <p>The 2nd Trial &middot; a second look at science.</p>
+    </div>
+  </footer>
 </Layout>
+
+<style>
+  .work {
+    padding-block: clamp(3rem, 8vh, 5rem);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    margin: 0;
+  }
+  .count {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .empty {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+
+  /* scroll-in animation */
+  .grid :global(.card) {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: rise 0.5s ease forwards;
+  }
+  @keyframes rise {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding-block: 2.5rem;
+  }
+  .footer p {
+    margin: 0;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+  const cards = document.querySelectorAll<HTMLElement>('#grid .card');
+  const countEl = document.getElementById('count');
+  const emptyEl = document.getElementById('empty');
+
+  function applyFilter(filter: string) {
+    let visible = 0;
+    cards.forEach((card) => {
+      const tags = (card.dataset.tags ?? '').split(' ');
+      const match = filter === 'all' || tags.includes(filter);
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    if (countEl) countEl.textContent = String(visible);
+    if (emptyEl) emptyEl.hidden = visible !== 0;
+  }
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+      chip.setAttribute('aria-pressed', 'true');
+      applyFilter(chip.dataset.filter ?? 'all');
+    });
+  });
+
+  // stagger the rise animation
+  cards.forEach((card, i) => {
+    card.style.animationDelay = `${Math.min(i * 60, 480)}ms`;
+  });
+
+  // reveal the compact sticky header once the hero scrolls out of view
+  const sentinel = document.querySelector('.hero-sentinel');
+  const stickyHeader = document.getElementById('sticky-header');
+  if (sentinel && stickyHeader) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        stickyHeader.dataset.state = entry.isIntersecting
+          ? 'hidden'
+          : 'visible';
+      },
+      { rootMargin: '0px', threshold: 0 }
+    );
+    observer.observe(sentinel);
+  }
+</script>

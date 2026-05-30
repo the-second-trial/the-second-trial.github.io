@@ -1,0 +1,78 @@
+---
+const { title = 'The 2nd Trial' } = Astro.props;
+---
+
+<div class="sticky-header" id="sticky-header" data-state="hidden">
+  <div class="wrap sticky-inner">
+    <a class="brand" href="#top" aria-label="Back to top">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="brand-name">{title}</span>
+    </a>
+    <a class="cta" href="#work">The Work</a>
+  </div>
+</div>
+
+<style>
+  .sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 75%, transparent);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .sticky-header[data-state='visible'] {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .sticky-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.7rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+  }
+  .dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px -1px var(--accent-glow);
+  }
+  .brand:hover .brand-name {
+    color: #fff;
+  }
+
+  .cta {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
+    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  }
+  .cta:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+</style>
