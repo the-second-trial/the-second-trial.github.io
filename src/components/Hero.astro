@@ -5,7 +5,7 @@ const tagline =
 
 <header class="hero" id="top">
   <span class="hero-sentinel" aria-hidden="true"></span>
-  <div class="stars" aria-hidden="true"></div>
+  <div class="grid-paper" aria-hidden="true"></div>
   <div class="glow" aria-hidden="true"></div>
 
   <div class="wrap hero-inner">
@@ -51,22 +51,70 @@ const tagline =
       );
     filter: blur(8px);
     pointer-events: none;
+    animation: glow-drift 16s ease-in-out infinite;
   }
 
-  .stars {
+  @keyframes glow-drift {
+    0%,
+    100% {
+      transform: translateX(-50%) translate(-4%, -2%) scale(1);
+      opacity: 0.85;
+    }
+    33% {
+      transform: translateX(-50%) translate(5%, 3%) scale(1.08);
+      opacity: 1;
+    }
+    66% {
+      transform: translateX(-50%) translate(2%, -3%) scale(0.96);
+      opacity: 0.9;
+    }
+  }
+
+  .grid-paper {
     position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-        1px 1px at 20% 30%,
-        rgba(255, 255, 255, 0.6) 50%,
-        transparent
+    inset: -15% 0 -15% 0;
+    will-change: transform;
+    /* fine minor grid + bolder major grid, like squared math paper */
+    background-image:
+      /* major lines every 120px */
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
+        transparent 1px
       ),
-      radial-gradient(1px 1px at 80% 20%, rgba(255, 255, 255, 0.5) 50%, transparent),
-      radial-gradient(1px 1px at 60% 70%, rgba(255, 255, 255, 0.4) 50%, transparent),
-      radial-gradient(1px 1px at 35% 80%, rgba(255, 255, 255, 0.5) 50%, transparent),
-      radial-gradient(1.5px 1.5px at 90% 60%, rgba(255, 255, 255, 0.5) 50%, transparent),
-      radial-gradient(1px 1px at 10% 60%, rgba(255, 255, 255, 0.4) 50%, transparent);
-    opacity: 0.7;
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--accent) 22%, transparent) 1px,
+        transparent 1px
+      ),
+      /* minor lines every 24px */
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.06) 1px,
+        transparent 1px
+      );
+    background-size:
+      120px 120px,
+      120px 120px,
+      24px 24px,
+      24px 24px;
+    background-position: center center;
+    /* fade the grid out toward the edges so it melts into the page */
+    -webkit-mask-image: radial-gradient(
+      115% 90% at 50% 35%,
+      #000 0%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      115% 90% at 50% 35%,
+      #000 0%,
+      transparent 78%
+    );
     pointer-events: none;
   }
 
@@ -141,3 +189,33 @@ const tagline =
     }
   }
 </style>
+
+<script>
+  const grid = document.querySelector<HTMLElement>('.grid-paper');
+  const reduceMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
+
+  if (grid && !reduceMotion) {
+    const SPEED = 0.25; // fraction of scroll distance the grid drifts
+    let ticking = false;
+
+    const update = () => {
+      grid.style.transform = `translateY(${window.scrollY * SPEED}px)`;
+      ticking = false;
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true }
+    );
+
+    update();
+  }
+</script>

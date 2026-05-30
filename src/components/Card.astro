@@ -8,9 +8,16 @@ const formattedDate = date
       month: 'short',
     })
   : null;
+
+const searchText = `${title} ${description} ${tags.join(' ')}`.toLowerCase();
 ---
 
-<a class="card" href={href} data-tags={tags.join(' ')}>
+<a
+  class="card"
+  href={href}
+  data-tags={tags.join(' ')}
+  data-search={searchText}
+>
   {
     formattedDate && (
       <div class="card-head">
