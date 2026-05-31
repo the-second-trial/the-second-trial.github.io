@@ -203,6 +203,29 @@ const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'UTC' });
     background: none;
     color: var(--text);
   }
+  .prose :global(hr) {
+    height: 1px;
+    border: none;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.4rem 0;
+    font-size: 0.88rem;
+  }
+  .prose :global(th),
+  .prose :global(td) {
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+  }
+  .prose :global(th) {
+    color: var(--accent);
+    font-weight: 700;
+    background: var(--surface);
+  }
 
   .art-foot {
     margin-top: 2.5rem;

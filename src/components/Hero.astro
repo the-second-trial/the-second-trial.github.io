@@ -10,7 +10,7 @@ const tagline =
   <div class="wrap hero-inner">
     <div class="term">
       <p class="line"><span class="prompt">the-2nd-trial:~$</span> whoami</p>
-      <h1 class="title">the_2nd_trial</h1>
+      <h1 class="title" id="glitch-title" aria-label="the_2nd_trial">the_2nd_trial</h1>
       <p class="line out">{tagline}</p>
       <p class="line"><span class="prompt">the-2nd-trial:~$</span> <span
           class="cmd"
@@ -134,6 +134,17 @@ const tagline =
     text-shadow: 0 0 18px var(--accent-glow);
   }
 
+  /* per-character glitch state */
+  .title span {
+    display: inline-block;
+    transition: color 0.08s ease, text-shadow 0.08s ease;
+  }
+  .title span.glitched {
+    color: var(--bg);
+    background: var(--accent);
+    text-shadow: none;
+  }
+
   .scroll-cue {
     display: inline-flex;
     align-items: center;
@@ -206,5 +217,67 @@ const tagline =
       // small initial delay so the page settles first
       window.setTimeout(typeNext, 650);
     }
+  }
+
+  /* ---- glitch the big title at non-uniform intervals ---- */
+  const title = document.getElementById('glitch-title');
+
+  if (title && !reduceMotion) {
+    const original = title.textContent ?? '';
+
+    // map a character to its "glitched" form; null = not glitchable
+    const glitchOf = (ch: string): string | null => {
+      if (ch === '_') return null; // underscores excluded
+      if (ch === 'i') return '1';
+      if (ch === '2') return 'Z';
+      if (/[a-z]/.test(ch)) return ch.toUpperCase();
+      return null;
+    };
+
+    // build per-character spans, remembering which are glitchable
+    title.textContent = '';
+    const cells: { el: HTMLSpanElement; base: string; glitch: string }[] = [];
+
+    for (const ch of original) {
+      const span = document.createElement('span');
+      span.textContent = ch;
+      title.appendChild(span);
+      const g = glitchOf(ch);
+      if (g !== null) cells.push({ el: span, base: ch, glitch: g });
+    }
+
+    const pick = <T,>(arr: T[], n: number): T[] => {
+      const pool = arr.slice();
+      const out: T[] = [];
+      for (let k = 0; k < n && pool.length; k++) {
+        out.push(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+      }
+      return out;
+    };
+
+    const tick = () => {
+      const count = 1 + Math.floor(Math.random() * 2); // 1 or 2 letters
+      const chosen = pick(cells, count);
+
+      chosen.forEach((c) => {
+        c.el.textContent = c.glitch;
+        c.el.classList.add('glitched');
+      });
+
+      // hold the glitch briefly, then revert
+      const hold = 140 + Math.random() * 260;
+      window.setTimeout(() => {
+        chosen.forEach((c) => {
+          c.el.textContent = c.base;
+          c.el.classList.remove('glitched');
+        });
+      }, hold);
+
+      // non-uniform gap before the next glitch
+      const gap = 900 + Math.random() * 1600;
+      window.setTimeout(tick, gap);
+    };
+
+    window.setTimeout(tick, 1400);
   }
 </script>
