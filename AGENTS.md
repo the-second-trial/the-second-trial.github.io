@@ -21,6 +21,23 @@ initiative that produces its own page.
 - `npm run build` — production build (single Astro/Vite build → `dist/`).
 - `npm run preview` — preview the built site.
 
+### Standalone projects (via root `Makefile` only)
+
+Standalone projects under `projects/<slug>/` are built and published **only**
+through the root `Makefile`. Projects never write to `public/` themselves.
+
+- `make build-<slug>` — build one project into `public/work/<slug>/app/` (uses
+  `npm ci`; reproducible, requires a committed `package-lock.json`).
+- `make build-projects` — build all standalone projects (`npm ci`).
+- `make build` — build all projects (`npm ci`), then the main Astro site.
+- `make local-build-<slug>` — build one project with `npm install` (updates
+  its `package-lock.json`). Use when adding or bumping a project's deps.
+- `make local-build-projects` — same, for all projects.
+- `make help` — list all targets.
+
+Deploys/CI use the `npm ci` targets. After changing a project's dependencies,
+run a `local-build-*` target and commit the updated `package-lock.json`.
+
 ## Architecture strategy (read before adding a project)
 
 This repo is a **monorepo with a single build**. There is exactly one build
@@ -34,9 +51,12 @@ How to add a new project depends on its kind:
 2. **Interactive** → add an Astro page under `src/pages/work/<slug>/` and use a
    client-side island (vanilla `<script>` or a framework island). Astro's
    single Vite build handles bundling, hashing, and base paths.
-3. **Heavy standalone app** (WASM, big WebGL) → commit the prebuilt static
-   output to `public/work/<slug>/` and link/iframe it. Build the artifact
-   outside this pipeline; never add a second build system here.
+3. **Heavy standalone app** (WASM, big WebGL) → serve the prebuilt static
+   output from `public/work/<slug>/app/` and link to it from the article at
+   `/work/<slug>/`. Build the artifact **only via the root `Makefile`**
+   (`make build-<slug>`); the project itself never writes to `public/`. The
+   artifact is git-ignored and rebuilt on deploy. Never add a second build
+   system to the site pipeline.
 4. **Independent lifecycle** → give it its own repo + its own GitHub Pages
    deploy, and **link** to it from this site rather than stitching builds.
 

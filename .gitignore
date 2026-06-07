@@ -1,6 +1,11 @@
 # build output
 dist/
 
+# generated standalone project artifacts (produced by `make build-<slug>`).
+# These are rebuilt during deploy and must not be committed. Hand-authored
+# assets in public/ (e.g. favicon.svg) are still tracked normally.
+public/work/
+
 # dependencies
 node_modules/
 

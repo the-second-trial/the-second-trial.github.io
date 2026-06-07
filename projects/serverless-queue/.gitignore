@@ -1,0 +1,17 @@
+# Observable Framework build artifacts (do NOT commit from here)
+dist/
+
+# Observable Framework cache & deploy metadata (lives in the source root)
+src/.observablehq/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# os
+.DS_Store
